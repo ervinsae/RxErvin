@@ -1,0 +1,106 @@
+package com.ervin.android.rxervin.fragment;
+
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.ervin.android.rxervin.GankInfoActivity;
+import com.ervin.android.rxervin.R;
+import com.ervin.android.rxervin.adapter.AndroidAdapter;
+import com.ervin.android.rxervin.adapter.OnItemClickListener;
+import com.ervin.android.rxervin.api.ApiRequest;
+import com.ervin.android.rxervin.entity.MeizhiEntity;
+import com.ervin.android.rxervin.entity.Meizhis;
+import com.ervin.android.rxervin.utils.RecycleViewDivider;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class AndroidFragment extends Fragment {
+
+    @BindView(R.id.rv_android)
+    RecyclerView rvAndroid;
+
+    AndroidAdapter mAdapter;
+    public List<Meizhis> data;
+
+    public AndroidFragment() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_android, container, false);
+        ButterKnife.bind(this,view);
+
+        initView();
+        return view;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
+
+    private void initView(){
+        mAdapter = new AndroidAdapter();
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        rvAndroid.setLayoutManager(manager);
+        rvAndroid.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL));
+        rvAndroid.setAdapter(mAdapter);
+
+        mAdapter.setOnclickedListener(new OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                // TODO: 2016/8/12 跳转webview
+                Intent intent = new Intent(getActivity(), GankInfoActivity.class);
+                intent.putExtra("url",data.get(position).url);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void initData(){
+        ApiRequest.getMeizhiApi().getAndroidGank(10,1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<MeizhiEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(MeizhiEntity meizhiEntity) {
+                        if(meizhiEntity != null){
+                            mAdapter.setData(meizhiEntity.results);
+                            data = meizhiEntity.results;
+                        }
+                    }
+                });
+    }
+}

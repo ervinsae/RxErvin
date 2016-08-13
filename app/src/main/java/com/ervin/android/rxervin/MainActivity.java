@@ -5,16 +5,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.ervin.android.rxervin.fragment.ElementFragment;
 import com.ervin.android.rxervin.fragment.ThreeFragment;
-import com.ervin.android.rxervin.fragment.TwoFragmen;
+import com.ervin.android.rxervin.fragment.AndroidFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tab_fragment)
     TabLayout mTab;
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        setToolbar();
         initView();
     }
 
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         return new ElementFragment();
                     case 1:
-                        return new TwoFragmen();
+                        return new AndroidFragment();
                     case 2:
                         return new ThreeFragment();
                     default:
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         return "ElementFragment";
                     case 1:
-                        return "TwoFragment";
+                        return "AndroidFragment";
                     case 2:
                         return "ThreeFragment";
                     default:
@@ -67,5 +68,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mTab.setupWithViewPager(mPager);
+    }
+
+    @Override
+    protected void setToolbar() {
+        toolbarTitle.setText("主页");
+        toolbarLeft.setVisibility(View.INVISIBLE);
     }
 }
