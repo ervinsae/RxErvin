@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:indicatorName="BallPulseIndicator"
-        app:indicatorColor="@color/colorPrimary"
+        app:indicatorColor="@color/colorAccent"
         style="@style/AVLoadingIndicatorView.Small"
         android:gravity="center"/>
 

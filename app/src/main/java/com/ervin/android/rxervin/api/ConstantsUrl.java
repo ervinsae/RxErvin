@@ -7,5 +7,5 @@ public class ConstantsUrl {
 
     public static final String ZHUANGBI_BASE_URL = "http://zhuangbi.info/";
 
-    public static final String MEIZI_BASE_URL = "http://gank.io/api/data/";
+    public static final String MEIZI_BASE_URL = "http://gank.io/api/";
 }

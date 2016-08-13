@@ -30,7 +30,7 @@ public class ApiRequest {
         return createRetrofitClient(ZhuangbiApi.class,ConstantsUrl.ZHUANGBI_BASE_URL);
     }
 
-    public static MeizhiApi getMeizhiApi(){
-        return createRetrofitClient(MeizhiApi.class,ConstantsUrl.MEIZI_BASE_URL);
+    public static GankApi getMeizhiApi(){
+        return createRetrofitClient(GankApi.class,ConstantsUrl.MEIZI_BASE_URL);
     }
 }

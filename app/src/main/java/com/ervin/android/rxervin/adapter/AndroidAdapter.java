@@ -31,6 +31,7 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
     public void onBindViewHolder(AndroidAdapter.ViewHolder holder, int position) {
         Meizhis meizhis = mData.get(position);
         holder.tvTitle.setText(meizhis.desc);
+        //holder.tvTime.setText(TimeHelper.millisToYYYYMMddHHmm(meizhis.publishedAt.getTime()));
         holder.tvTime.setText(meizhis.publishedAt.toString());
     }
 
@@ -41,6 +42,7 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
 
     public void setData(List<Meizhis> data){
         mData = data;
+        notifyDataSetChanged();
     }
 
     public void setOnclickedListener(OnItemClickListener listener){

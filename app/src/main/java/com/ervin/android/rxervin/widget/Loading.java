@@ -38,6 +38,9 @@ public class Loading extends Dialog {
         loading.hide();
     }
 
+    public void setLoadingStyle(String name){
+        loading.setIndicator(name);
+    }
     public void setLoadingText(String loadingText) {
         this.tvLoadingText.setText(loadingText);
     }

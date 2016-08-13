@@ -4,11 +4,13 @@ package com.ervin.android.rxervin.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ervin.android.rxervin.GankInfoActivity;
 import com.ervin.android.rxervin.R;
@@ -30,14 +32,17 @@ import rx.schedulers.Schedulers;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AndroidFragment extends Fragment {
+public class AndroidFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     @BindView(R.id.rv_android)
     RecyclerView rvAndroid;
+    @BindView(R.id.sr_android)
+    SwipeRefreshLayout srRefresh;
 
     AndroidAdapter mAdapter;
     public List<Meizhis> data;
 
+    private static int page = 1;
     public AndroidFragment() {
         // Required empty public constructor
     }
@@ -55,11 +60,11 @@ public class AndroidFragment extends Fragment {
     }
 
 
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
-        initData();
-    }
+        initData(page);
+    }*/
 
     private void initView(){
         mAdapter = new AndroidAdapter();
@@ -77,21 +82,24 @@ public class AndroidFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        srRefresh.setOnRefreshListener(this);
+        initData(page);
     }
 
-    private void initData(){
-        ApiRequest.getMeizhiApi().getAndroidGank(10,1)
+    private void initData(int page){
+        srRefresh.setRefreshing(true);
+        ApiRequest.getMeizhiApi().getAndroidGank(10,page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<MeizhiEntity>() {
                     @Override
                     public void onCompleted() {
-
+                        srRefresh.setRefreshing(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Toast.makeText(getActivity(),e.toString(),Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -102,5 +110,11 @@ public class AndroidFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onRefresh() {
+        page ++;
+        initData(page);
     }
 }
