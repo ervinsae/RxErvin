@@ -1,6 +1,7 @@
 package com.ervin.android.rxervin.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,13 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ervin.android.rxervin.GankInfoActivity;
 import com.ervin.android.rxervin.R;
-import com.ervin.android.rxervin.adapter.AndroidAdapter;
+import com.ervin.android.rxervin.adapter.GankDayAdapter;
+import com.ervin.android.rxervin.adapter.OnItemClickListener;
 import com.ervin.android.rxervin.api.ApiRequest;
 import com.ervin.android.rxervin.entity.AndroidGankEntity;
 import com.ervin.android.rxervin.entity.Meizhis;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,7 +34,10 @@ public class GankDayFragment extends Fragment {
     @BindView(R.id.rv_gank)
     RecyclerView rvGank;
 
-    private AndroidAdapter mAdapter;
+    private GankDayAdapter mAdapter;
+
+    private List<Meizhis> mAndroidData;
+    private List<Meizhis> mIOSData;
 
     public GankDayFragment() {
         // Required empty public constructor
@@ -51,10 +56,27 @@ public class GankDayFragment extends Fragment {
     }
 
     private void initView(){
-        mAdapter = new AndroidAdapter(getActivity());
+        mAdapter = new GankDayAdapter(getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         rvGank.setLayoutManager(manager);
         rvGank.setAdapter(mAdapter);
+
+        mAdapter.setOnClickedListener(new OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if(position == 0 || position == mAndroidData.size()) return;
+
+                String url;
+                if(position < mAndroidData.size()){
+                    url = mAndroidData.get(position).url;
+                }else{
+                    url = mIOSData.get(position - mAndroidData.size()).url;
+                }
+                Intent intent = new Intent(getActivity(), GankInfoActivity.class);
+                intent.putExtra("url",url);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initData(){
@@ -75,11 +97,13 @@ public class GankDayFragment extends Fragment {
                     @Override
                     public void onNext(AndroidGankEntity androidGankEntity) {
                         if(androidGankEntity != null){
-                            List<Meizhis> data = new ArrayList<>();
+                            /*List<Meizhis> data = new ArrayList<>();
                             data.addAll(androidGankEntity.results.Android);
-                            data.addAll(androidGankEntity.results.iOS);
+                            data.addAll(androidGankEntity.results.iOS);*/
+                            mAndroidData = androidGankEntity.results.Android;
+                            mIOSData = androidGankEntity.results.iOS;
 
-                            mAdapter.setData(data);
+                            mAdapter.setData(androidGankEntity.results.Android,androidGankEntity.results.iOS);
                         }
                     }
                 });

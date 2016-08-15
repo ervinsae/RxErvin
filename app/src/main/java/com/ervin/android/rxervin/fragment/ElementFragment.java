@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.ervin.android.rxervin.entity.BaseEntity;
 import com.ervin.android.rxervin.entity.MeizhiEntity;
 import com.ervin.android.rxervin.entity.Meizhis;
 import com.ervin.android.rxervin.entity.ZhuangbiEntity;
+import com.ervin.android.rxervin.utils.ScrollHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,9 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
     SwipeRefreshLayout mRefresh;
     @BindView(R.id.et_search)
     EditText etSearch;
+
+    @BindView(R.id.sv_search)
+    SearchView svSearch;
 
     ZhuangbiAdapter mAdapter;
     List<BaseEntity> mData;
@@ -72,7 +77,7 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
 
     private void initView(){
-        GridLayoutManager manager = new GridLayoutManager(getActivity(),2);
+        final GridLayoutManager manager = new GridLayoutManager(getActivity(),2);
         mAdapter = new ZhuangbiAdapter(getActivity());
 
         rvZhuangbi.setLayoutManager(manager);
@@ -97,6 +102,58 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     return true;
                 }
                 return false;
+            }
+        });
+
+        svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchText = query;
+                initData(searchText,index);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        ScrollHelper.init(rvZhuangbi, manager, new ScrollHelper.OnScrollStateChangedListener() {
+            @Override
+            public void onScrollToBottom() {
+                ApiRequest.getMeizhiApi().getMeizhiData(10,1)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<MeizhiEntity>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(MeizhiEntity meizhiEntity) {
+                                List<BaseEntity> baseList = new ArrayList<>();
+                                List<Meizhis> meizhiList = meizhiEntity.results;
+
+                                for(Meizhis meizhi : meizhiList){
+                                    BaseEntity baseItem = new BaseEntity();
+                                    baseItem.description = meizhi.desc;
+                                    baseItem.image_url = meizhi.url;
+
+                                    baseList.add(baseItem);
+                                }
+
+                                mData.addAll(baseList);
+
+                                mAdapter.setData(mData);
+                            }
+                        });
             }
         });
     }

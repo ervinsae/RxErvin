@@ -12,12 +12,20 @@
         android:focusableInTouchMode="true">
 
         <EditText
+            android:visibility="gone"
             android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="15dp"
             android:background="@drawable/shape_bg_research"
             android:hint="装逼搜索" />
+        <android.support.v7.widget.SearchView
+            android:id="@+id/sv_search"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/shape_bg_research">
+        </android.support.v7.widget.SearchView>
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout

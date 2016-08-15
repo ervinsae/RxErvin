@@ -73,7 +73,7 @@ public class AndroidFragment extends Fragment implements SwipeRefreshLayout.OnRe
         rvAndroid.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL));
         rvAndroid.setAdapter(mAdapter);
 
-        mAdapter.setOnclickedListener(new OnItemClickListener() {
+        mAdapter.setOnClickedListener(new OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
                 // TODO: 2016/8/12 跳转webview

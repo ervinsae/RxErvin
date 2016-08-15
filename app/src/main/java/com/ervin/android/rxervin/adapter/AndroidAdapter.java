@@ -52,7 +52,7 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
         notifyDataSetChanged();
     }
 
-    public void setOnclickedListener(OnItemClickListener listener){
+    public void setOnClickedListener(OnItemClickListener listener){
         mListener = listener;
     }
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
