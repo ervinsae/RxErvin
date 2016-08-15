@@ -7,9 +7,9 @@ import java.util.List;
  */
 public class AndroidGankEntity{
 
-    public List<DayData> results;
+    public DayData results;
 
-    public class DayData{
+    public static class DayData{
         public List<Meizhis> Android;
         public List<Meizhis> iOS;
     }

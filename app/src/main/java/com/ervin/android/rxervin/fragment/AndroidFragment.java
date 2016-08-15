@@ -67,7 +67,7 @@ public class AndroidFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }*/
 
     private void initView(){
-        mAdapter = new AndroidAdapter();
+        mAdapter = new AndroidAdapter(getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         rvAndroid.setLayoutManager(manager);
         rvAndroid.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL));

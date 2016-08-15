@@ -1,5 +1,6 @@
 package com.ervin.android.rxervin.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.ervin.android.rxervin.R;
 import com.ervin.android.rxervin.entity.Meizhis;
+import com.ervin.android.rxervin.utils.TimeHelper;
 
 import java.util.List;
 
@@ -21,9 +23,14 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
 
     private List<Meizhis> mData;
     public static OnItemClickListener mListener;
+    private Context mContext;
+
+    public AndroidAdapter(Context context){
+        this.mContext = context;
+    }
     @Override
     public AndroidAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_android_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_android_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -31,8 +38,8 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
     public void onBindViewHolder(AndroidAdapter.ViewHolder holder, int position) {
         Meizhis meizhis = mData.get(position);
         holder.tvTitle.setText(meizhis.desc);
-        //holder.tvTime.setText(TimeHelper.millisToYYYYMMddHHmm(meizhis.publishedAt.getTime()));
-        holder.tvTime.setText(meizhis.publishedAt.toString());
+        holder.tvTime.setText(TimeHelper.millisToYYYYMMddHHmm(meizhis.publishedAt.getTime()));
+        //holder.tvTime.setText(meizhis.publishedAt.toString());
     }
 
     @Override

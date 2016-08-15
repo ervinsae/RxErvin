@@ -19,5 +19,5 @@ public interface GankApi {
     Observable<MeizhiEntity> getAndroidGank(@Path("number") int number ,@Path("page") int page);
 
     @GET("day/{year}/{month}/{day}")
-    Observable<AndroidGankEntity> getAndroidDayGank(@Path("yera") int year,@Path("month") int month,@Path("day") int day);
+    Observable<AndroidGankEntity> getAndroidDayGank(@Path("year") String year,@Path("month") String month,@Path("day") String day);
 }

@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.ervin.android.rxervin.fragment.ElementFragment;
-import com.ervin.android.rxervin.fragment.ThreeFragment;
+import com.ervin.android.rxervin.fragment.GankDayFragment;
 import com.ervin.android.rxervin.fragment.AndroidFragment;
 
 import butterknife.BindView;
@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
                     case 1:
                         return new AndroidFragment();
                     case 2:
-                        return new ThreeFragment();
+                        return new GankDayFragment();
                     default:
                         return new ElementFragment();
                 }
@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity {
                     case 1:
                         return "AndroidFragment";
                     case 2:
-                        return "ThreeFragment";
+                        return "GankDayFragment";
                     default:
                         return "ElementFragment";
                 }
