@@ -17,6 +17,7 @@ import com.ervin.android.rxervin.adapter.OnItemClickListener;
 import com.ervin.android.rxervin.api.ApiRequest;
 import com.ervin.android.rxervin.entity.AndroidGankEntity;
 import com.ervin.android.rxervin.entity.Meizhis;
+import com.ervin.android.rxervin.utils.TimeHelper;
 
 import java.util.List;
 
@@ -80,7 +81,8 @@ public class GankDayFragment extends Fragment {
     }
 
     private void initData(){
-        ApiRequest.getMeizhiApi().getAndroidDayGank("2016","08","10")
+        String today = TimeHelper.getToday();
+        ApiRequest.getMeizhiApi().getAndroidDayGank(today.substring(0,4),today.substring(5,7),today.substring(8,10))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<AndroidGankEntity>() {
