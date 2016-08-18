@@ -7,9 +7,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.ervin.android.rxervin.fragment.AndroidFragment;
 import com.ervin.android.rxervin.fragment.ElementFragment;
 import com.ervin.android.rxervin.fragment.GankDayFragment;
-import com.ervin.android.rxervin.fragment.AndroidFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

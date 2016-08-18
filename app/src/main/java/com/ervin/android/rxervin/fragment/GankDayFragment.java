@@ -18,6 +18,7 @@ import com.ervin.android.rxervin.api.ApiRequest;
 import com.ervin.android.rxervin.entity.AndroidGankEntity;
 import com.ervin.android.rxervin.entity.Meizhis;
 import com.ervin.android.rxervin.utils.TimeHelper;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class GankDayFragment extends Fragment {
                 }else{
                     url = mIOSData.get(position - mAndroidData.size()).url;
                 }
+                Logger.d("url---------",url);
                 Intent intent = new Intent(getActivity(), GankInfoActivity.class);
                 intent.putExtra("url",url);
                 startActivity(intent);
