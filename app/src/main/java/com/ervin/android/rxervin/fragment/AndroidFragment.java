@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.ervin.android.rxervin.GankInfoActivity;
 import com.ervin.android.rxervin.R;
+import com.ervin.android.rxervin.SchedulerHelper;
 import com.ervin.android.rxervin.adapter.AndroidAdapter;
 import com.ervin.android.rxervin.adapter.OnItemClickListener;
 import com.ervin.android.rxervin.api.ApiRequest;
@@ -26,8 +27,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,8 +88,7 @@ public class AndroidFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private void initData(int page){
         srRefresh.setRefreshing(true);
         ApiRequest.getMeizhiApi().getAndroidGank(10,page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(SchedulerHelper.<MeizhiEntity>applySchedulers())
                 .subscribe(new Subscriber<MeizhiEntity>() {
                     @Override
                     public void onCompleted() {
