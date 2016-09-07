@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ervin.android.rxervin.R;
+import com.ervin.android.rxervin.SchedulerHelper;
 import com.ervin.android.rxervin.adapter.ZhuangbiAdapter;
 import com.ervin.android.rxervin.api.ApiRequest;
 import com.ervin.android.rxervin.entity.BaseEntity;
@@ -123,8 +124,7 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
             @Override
             public void onScrollToBottom() {
                 ApiRequest.getMeizhiApi().getMeizhiData(10,1)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(SchedulerHelper.<MeizhiEntity>applySchedulers())
                         .subscribe(new Subscriber<MeizhiEntity>() {
                             @Override
                             public void onCompleted() {
