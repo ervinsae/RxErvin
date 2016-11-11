@@ -31,6 +31,21 @@ public class MainActivity extends BaseActivity {
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
     private void initView(){
         mPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
