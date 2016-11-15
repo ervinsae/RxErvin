@@ -1,5 +1,12 @@
 package com.ervin.android.rxervin.api;
 
+import com.ervin.android.rxervin.App;
+import com.ervin.android.rxervin.BuildConfig;
+import com.ervin.android.rxervin.CacheInterceptor;
+
+import java.io.File;
+
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -12,16 +19,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiRequest {
 
     private static <T>T createRetrofitClient(Class<?> T, String url){
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        //Logger.json(interceptor.intercept(new Ch).body());
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if(BuildConfig.DEBUG) {
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(interceptor);//可以写多个拦截器
+        }
+        //设置缓存拦截器
+        CacheInterceptor cacheInterceptor = new CacheInterceptor();
+        File cacheFile = new File(App.getInstance().getApplicationContext().getCacheDir(),"RxErvin");//外部公共public缓存目录
+        Cache cache = new Cache(cacheFile,1024 * 1024 * 5);
+        builder.cache(cache).addInterceptor(cacheInterceptor);
+
+        // TODO: 2016/11/15 可以做一些超时设置
+        builder.retryOnConnectionFailure(true);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client).build();
+                .client(builder.build()).build();
 
         return (T)retrofit.create(T);
     }
