@@ -1,5 +1,6 @@
-package com.ervin.android.rxervin;
+package com.ervin.android.rxervin.api;
 
+import com.ervin.android.rxervin.App;
 import com.ervin.android.rxervin.utils.NetworkHelper;
 
 import java.io.IOException;

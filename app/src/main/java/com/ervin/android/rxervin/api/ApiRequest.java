@@ -2,12 +2,16 @@ package com.ervin.android.rxervin.api;
 
 import com.ervin.android.rxervin.App;
 import com.ervin.android.rxervin.BuildConfig;
-import com.ervin.android.rxervin.CacheInterceptor;
 
 import java.io.File;
+import java.io.IOException;
 
+import okhttp3.Authenticator;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -33,6 +37,16 @@ public class ApiRequest {
 
         // TODO: 2016/11/15 可以做一些超时设置
         builder.retryOnConnectionFailure(true);
+        //如果你需要在遇到诸如 401 Not Authorised 的时候进行刷新 token，可以使用 Authenticator，这是一个专门设计用于当验证出现错误的时候，进行询问获取处理的拦截器：
+        Authenticator mAuthenticator = new Authenticator() {
+            @Override
+            public Request authenticate(Route route, Response response) throws IOException {
+                //刷新token
+                //your.token = service.token;
+                return response.request().newBuilder().addHeader("Authorization","token").build();
+            }
+        };
+        builder.authenticator(mAuthenticator);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
