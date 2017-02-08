@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import okhttp3.Authenticator;
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -47,6 +48,18 @@ public class ApiRequest {
             }
         };
         builder.authenticator(mAuthenticator);
+
+        //可以在请求中添加统一的header
+        builder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder()
+                        .addHeader("range","")//支持断点下载
+                        .addHeader("type","")
+                        .build();
+                return chain.proceed(request);
+            }
+        });
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
