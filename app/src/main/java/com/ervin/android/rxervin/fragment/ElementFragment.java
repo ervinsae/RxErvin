@@ -251,7 +251,7 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onRefresh() {
-        index ++;
+        index = 1;
         initData(searchText,index);
     }
 }
