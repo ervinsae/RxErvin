@@ -73,7 +73,12 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
         ButterKnife.bind(this,view);
         initView();
 
-        initData(searchText,index);
+        mRefresh.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onRefresh();
+            }
+        },200);
         return view;
     }
 
