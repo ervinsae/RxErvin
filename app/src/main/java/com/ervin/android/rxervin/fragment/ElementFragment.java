@@ -5,9 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +37,7 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func2;
+import rx.functions.Func3;
 import rx.schedulers.Schedulers;
 
 /**
@@ -79,7 +79,7 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
 
     private void initView(){
-        final GridLayoutManager manager = new GridLayoutManager(getActivity(),2);
+        final StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         mAdapter = new ZhuangbiAdapter(getActivity());
 
         rvZhuangbi.setLayoutManager(manager);
@@ -204,19 +204,23 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 });
 */
         mRefresh.setRefreshing(true);
-        Observable.zip(ApiRequest.getZhuangbiApi().search(search), ApiRequest.getMeizhiApi().getMeizhiData(10, page),
-                new Func2<List<ZhuangbiEntity>, MeizhiEntity, List<BaseEntity>>() {
+        Observable.zip(ApiRequest.getZhuangbiApi().search(search),
+                ApiRequest.getMeizhiApi().getMeizhiData(10, page),
+                ApiRequest.getMeizhiApi().getAndroidGank(10, page),
+                new Func3<List<ZhuangbiEntity>, MeizhiEntity , MeizhiEntity ,List<BaseEntity>>() {
                     @Override
-                    public List<BaseEntity> call(List<ZhuangbiEntity> zhuangbiEntities, MeizhiEntity meizhiEntity) {
+                    public List<BaseEntity> call(List<ZhuangbiEntity> zhuangbiEntities, MeizhiEntity meizhiEntity,MeizhiEntity meizhiEntity2) {
                         List<BaseEntity> baseList = new ArrayList<>();
                         List<Meizhis> meizhiList = meizhiEntity.results;
+                        List<Meizhis> meizhiList2 = meizhiEntity2.results;
                         for(ZhuangbiEntity zhuangbi : zhuangbiEntities){
                             baseList.add(zhuangbi);
                         }
-                        for(Meizhis meizhi : meizhiList){
+                        for(int i = 0 ;i < Math.min(meizhiList.size(),meizhiList2.size());i++){
                             BaseEntity baseItem = new BaseEntity();
-                            baseItem.description = meizhi.desc;
-                            baseItem.image_url = meizhi.url;
+
+                            baseItem.description = meizhiList.get(i).desc + " " + meizhiList2.get(i).desc;
+                            baseItem.image_url = meizhiList.get(i).url;
 
                             baseList.add(baseItem);
                         }
