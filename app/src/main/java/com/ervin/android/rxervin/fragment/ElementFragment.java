@@ -27,6 +27,7 @@ import com.ervin.android.rxervin.entity.MeizhiEntity;
 import com.ervin.android.rxervin.entity.Meizhis;
 import com.ervin.android.rxervin.entity.ZhuangbiEntity;
 import com.ervin.android.rxervin.utils.ScrollHelper;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +124,9 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
         ScrollHelper.init(rvZhuangbi, manager, new ScrollHelper.OnScrollStateChangedListener() {
             @Override
             public void onScrollToBottom() {
-                ApiRequest.getMeizhiApi().getMeizhiData(10,1)
+                Logger.d("拉到最下面了。。。");
+                index++;
+                ApiRequest.getMeizhiApi().getMeizhiData(10,index)
                         .compose(SchedulerHelper.<MeizhiEntity>applySchedulers())
                         .subscribe(new Subscriber<MeizhiEntity>() {
                             @Override

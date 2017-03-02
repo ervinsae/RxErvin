@@ -82,9 +82,9 @@ public class GankDayFragment extends Fragment {
         });
     }
 
-    private void initData(){
+    private void initData() {
         String today = TimeHelper.getToday();
-        ApiRequest.getMeizhiApi().getAndroidDayGank(today.substring(0,4),today.substring(5,7),today.substring(8,10))
+        ApiRequest.getMeizhiApi().getAndroidDayGank(today.substring(0, 4), today.substring(5, 7), today.substring(8, 10))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<AndroidGankEntity>() {
@@ -100,14 +100,14 @@ public class GankDayFragment extends Fragment {
 
                     @Override
                     public void onNext(AndroidGankEntity androidGankEntity) {
-                        if(androidGankEntity != null){
+                        if (androidGankEntity != null) {
                             /*List<Meizhis> data = new ArrayList<>();
                             data.addAll(androidGankEntity.results.Android);
                             data.addAll(androidGankEntity.results.iOS);*/
                             mAndroidData = androidGankEntity.results.Android;
                             mIOSData = androidGankEntity.results.iOS;
 
-                            mAdapter.setData(androidGankEntity.results.Android,androidGankEntity.results.iOS);
+                            mAdapter.setData(androidGankEntity.results.Android, androidGankEntity.results.iOS);
                         }
                     }
                 });
