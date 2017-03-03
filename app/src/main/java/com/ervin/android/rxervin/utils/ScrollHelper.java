@@ -28,12 +28,14 @@ public class ScrollHelper {
                         int LastVisibleItem ;
                         int totalItemCount = layoutManager.getItemCount();
                         if(layoutManager instanceof StaggeredGridLayoutManager){
-                            if(totalItemCount % 2 != 0) {//针对两列的
+                            /*if(totalItemCount % 2 != 0) {//针对两列的
                                 //最后一列是单数
                                 LastVisibleItem = ((StaggeredGridLayoutManager) layoutManager).findLastCompletelyVisibleItemPositions(new int[2])[0];
                             }else{
                                 LastVisibleItem = ((StaggeredGridLayoutManager) layoutManager).findLastCompletelyVisibleItemPositions(new int[2])[1];
-                            }
+                            }*/
+                            LastVisibleItem = Math.max(((StaggeredGridLayoutManager) layoutManager).findLastCompletelyVisibleItemPositions(new int[2])[0]
+                                                    ,((StaggeredGridLayoutManager) layoutManager).findLastCompletelyVisibleItemPositions(new int[2])[1]);
                             Logger.d("最后一列:%d",LastVisibleItem);
                         }else if(layoutManager instanceof GridLayoutManager){
                             LastVisibleItem = ((GridLayoutManager) layoutManager).findLastCompletelyVisibleItemPosition();

@@ -141,7 +141,7 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
                             @Override
                             public void onError(Throwable e) {
-
+                                Logger.e("ElementFragment","scroll",e);
                             }
 
                             @Override
@@ -241,7 +241,7 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Logger.e("ElementFragment","refresh",e);
                     }
 
                     @Override
