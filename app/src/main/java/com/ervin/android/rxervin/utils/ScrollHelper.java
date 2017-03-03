@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
+import com.orhanobut.logger.Logger;
+
 /**
  * Created by Ervin on 2016/8/15.
  */
@@ -24,16 +26,22 @@ public class ScrollHelper {
                 switch (newState){
                     case RecyclerView.SCROLL_STATE_IDLE:
                         int LastVisibleItem ;
+                        int totalItemCount = layoutManager.getItemCount();
                         if(layoutManager instanceof StaggeredGridLayoutManager){
-                            //最后一列是单数
-                            LastVisibleItem = ((StaggeredGridLayoutManager) layoutManager).findLastCompletelyVisibleItemPositions(new int[2])[0];
+                            if(totalItemCount % 2 != 0) {//针对两列的
+                                //最后一列是单数
+                                LastVisibleItem = ((StaggeredGridLayoutManager) layoutManager).findLastCompletelyVisibleItemPositions(new int[2])[0];
+                            }else{
+                                LastVisibleItem = ((StaggeredGridLayoutManager) layoutManager).findLastCompletelyVisibleItemPositions(new int[2])[1];
+                            }
+                            Logger.d("最后一列:%d",LastVisibleItem);
                         }else if(layoutManager instanceof GridLayoutManager){
                             LastVisibleItem = ((GridLayoutManager) layoutManager).findLastCompletelyVisibleItemPosition();
                         }else{
                             LastVisibleItem = ((LinearLayoutManager)layoutManager).findLastCompletelyVisibleItemPosition();
                         }
 
-                        int totalItemCount = layoutManager.getItemCount();
+                        Logger.d("items in the bound:%d",totalItemCount);
                         if((LastVisibleItem >= (totalItemCount - 1)) && scrollDown){
                             if(callback != null){
                                 callback.onScrollToBottom();
