@@ -17,6 +17,7 @@
 #}
 #proguard-android.txt 已经存在一些默认混淆规则，没必要在 proguard-rules.pro 重复添加
 
+-ignorewarnings
 #指定压缩级别
 -optimizationpasses 5
 
@@ -46,6 +47,15 @@
 #Fragment未在AndroidManifest.xml中注册，需要额外保护下
 -keep public class * extends android.support.v4.app.Fragment
 -keep public class * extends android.app.Fragment
+
+#删除log代码
+-assumenosideeffects class android.util.Log {
+           public static int v(...);
+           public static int i(...);
+           public static int w(...);
+           public static int d(...);
+           public static int e(...);
+       }
 
 #第三方库的混淆规则
 
