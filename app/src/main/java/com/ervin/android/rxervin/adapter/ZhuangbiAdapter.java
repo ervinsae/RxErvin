@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ervin.android.rxervin.OnItemClickedListener;
 import com.ervin.android.rxervin.R;
 import com.ervin.android.rxervin.entity.BaseEntity;
 import com.squareup.picasso.Picasso;
@@ -28,6 +29,8 @@ public class ZhuangbiAdapter extends RecyclerView.Adapter<ZhuangbiAdapter.ViewHo
     public ZhuangbiAdapter(Context context){
         mContext = context;
     }
+
+    private OnItemClickedListener mListener;
     @Override
     public ZhuangbiAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_zhuangbi_item, parent, false);
@@ -35,10 +38,18 @@ public class ZhuangbiAdapter extends RecyclerView.Adapter<ZhuangbiAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ZhuangbiAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ZhuangbiAdapter.ViewHolder holder, final int position) {
         Picasso.with(mContext).load(data.get(position).image_url).into(holder.imageIv);
         holder.descriptionTv.setText(data.get(position).description);
         //holder.fileSize.setText(data.get(position).file_size);
+        if(mListener != null){
+            holder.imageIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(view,position);
+                }
+            });
+        }
     }
 
     @Override
@@ -50,6 +61,14 @@ public class ZhuangbiAdapter extends RecyclerView.Adapter<ZhuangbiAdapter.ViewHo
         this.data = data;
         Log.d("ervin","data size is" + data.size());
         notifyDataSetChanged();
+    }
+
+    public List<BaseEntity>  getData(){
+        return this.data;
+    }
+
+    public void setOnclickListener(OnItemClickedListener listener){
+        mListener = listener;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{

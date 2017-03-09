@@ -2,6 +2,7 @@ package com.ervin.android.rxervin.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ervin.android.rxervin.MeizhiImageActivity;
+import com.ervin.android.rxervin.OnItemClickedListener;
 import com.ervin.android.rxervin.R;
 import com.ervin.android.rxervin.SchedulerHelper;
 import com.ervin.android.rxervin.adapter.ZhuangbiAdapter;
@@ -162,6 +165,17 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
                                 mAdapter.setData(mData);
                             }
                         });
+            }
+        });
+
+        mAdapter.setOnclickListener(new OnItemClickedListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                List<BaseEntity> data = mAdapter.getData();
+                Intent intent = new Intent(getContext(), MeizhiImageActivity.class);
+                intent.putExtra("url",data.get(position).image_url);
+                startActivity(intent);
+
             }
         });
     }

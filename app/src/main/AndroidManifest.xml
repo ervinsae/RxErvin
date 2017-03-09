@@ -21,6 +21,7 @@
         </activity>
 
         <activity android:name=".GankInfoActivity"/>
+        <activity android:name=".MeizhiImageActivity"/>
     </application>
 
 </manifest>
