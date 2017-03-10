@@ -173,7 +173,8 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
             public void onItemClick(View view, int position) {
                 List<BaseEntity> data = mAdapter.getData();
                 Intent intent = new Intent(getContext(), MeizhiImageActivity.class);
-                intent.putExtra("url",data.get(position).image_url);
+                //intent.putExtra("url",data.get(position).image_url);
+                intent.putExtra("data",data.get(position));
                 startActivity(intent);
 
             }

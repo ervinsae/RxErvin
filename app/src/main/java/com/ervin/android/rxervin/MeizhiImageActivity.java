@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
+import com.ervin.android.rxervin.entity.BaseEntity;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -34,8 +35,12 @@ public class MeizhiImageActivity extends BaseActivity {
     }
 
     private void initView(){
-        String url = getIntent().getStringExtra("url");
-        Picasso.with(this).load(url).into(ivMeizhi);
+        //String url = getIntent().getStringExtra("url");
+        BaseEntity data = getIntent().getParcelableExtra("data");
+        if(data != null) {
+            Picasso.with(this).load(data.image_url).into(ivMeizhi);
+            toolbarRight.setText(data.created_at);
+        }
     }
 
     @OnClick(R.id.iv_back) void onBack(){

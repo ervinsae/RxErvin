@@ -16,6 +16,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     TextView toolbarTitle;
     @BindView(R.id.iv_back)
     ImageView toolbarLeft;
+    @BindView(R.id.toolbar_right)
+    TextView toolbarRight;
 
     protected abstract void setToolbar();
 
