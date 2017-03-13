@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.ervin.android.rxervin.BaseFragment;
 import com.ervin.android.rxervin.GankInfoActivity;
 import com.ervin.android.rxervin.R;
 import com.ervin.android.rxervin.SchedulerHelper;
@@ -31,7 +32,7 @@ import rx.Subscriber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AndroidFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class AndroidFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
 
     @BindView(R.id.rv_android)
     RecyclerView rvAndroid;
@@ -59,6 +60,9 @@ public class AndroidFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
 
+    @Override
+    protected void setToolbar() {
+    }
     /*@Override
     public void onResume() {
         super.onResume();
@@ -87,7 +91,7 @@ public class AndroidFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     private void initData(int page){
         srRefresh.setRefreshing(true);
-        ApiRequest.getMeizhiApi().getAndroidGank(10,page)
+        subscription = ApiRequest.getMeizhiApi().getAndroidGank(10,page)
                 .compose(SchedulerHelper.<MeizhiEntity>applySchedulers())
                 .subscribe(new Subscriber<MeizhiEntity>() {
                     @Override
@@ -114,5 +118,10 @@ public class AndroidFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public void onRefresh() {
         page ++;
         initData(page);
+    }
+
+    public void backToToday(){
+        page = 1;
+        initData(1);
     }
 }

@@ -37,6 +37,10 @@ public class GankInfoActivity extends BaseActivity {
         wvGank.loadUrl(url);
         wvGank.setWebChromeClient(new GankChromeWebView());
         wvGank.setWebViewClient(new GankWebView());
+
+        //安全处理（针对webview）
+        wvGank.getSettings().setJavaScriptEnabled(false);//不支持调用js
+
     }
     @Override
     protected void setToolbar() {

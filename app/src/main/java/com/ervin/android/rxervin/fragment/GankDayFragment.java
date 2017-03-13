@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ervin.android.rxervin.BaseFragment;
 import com.ervin.android.rxervin.GankInfoActivity;
 import com.ervin.android.rxervin.R;
 import com.ervin.android.rxervin.adapter.GankDayAdapter;
@@ -31,7 +32,7 @@ import rx.schedulers.Schedulers;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GankDayFragment extends Fragment {
+public class GankDayFragment extends BaseFragment {
 
     @BindView(R.id.rv_gank)
     RecyclerView rvGank;
@@ -84,7 +85,7 @@ public class GankDayFragment extends Fragment {
 
     private void initData() {
         String today = TimeHelper.getToday();
-        ApiRequest.getMeizhiApi().getAndroidDayGank(today.substring(0, 4), today.substring(5, 7), today.substring(8, 10))
+        subscription = ApiRequest.getMeizhiApi().getAndroidDayGank(today.substring(0, 4), today.substring(5, 7), today.substring(8, 10))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<AndroidGankEntity>() {
@@ -111,5 +112,10 @@ public class GankDayFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void setToolbar() {
+
     }
 }

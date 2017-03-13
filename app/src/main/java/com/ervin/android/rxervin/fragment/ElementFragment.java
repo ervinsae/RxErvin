@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ervin.android.rxervin.BaseFragment;
 import com.ervin.android.rxervin.MeizhiImageActivity;
 import com.ervin.android.rxervin.OnItemClickedListener;
 import com.ervin.android.rxervin.R;
@@ -46,7 +47,7 @@ import rx.schedulers.Schedulers;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class ElementFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
 
     @BindView(R.id.rv_zhuangbi)
     RecyclerView rvZhuangbi;
@@ -85,6 +86,10 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
         return view;
     }
 
+    @Override
+    protected void setToolbar() {
+
+    }
 
     private void initView(){
         final StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
@@ -224,7 +229,7 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 });
 */
         mRefresh.setRefreshing(true);
-        Observable.zip(ApiRequest.getZhuangbiApi().search(search),
+        subscription = Observable.zip(ApiRequest.getZhuangbiApi().search(search),
                 ApiRequest.getMeizhiApi().getMeizhiData(10, page),
                 ApiRequest.getMeizhiApi().getAndroidGank(10, page),
                 new Func3<List<ZhuangbiEntity>, MeizhiEntity , MeizhiEntity ,List<BaseEntity>>() {
@@ -274,4 +279,5 @@ public class ElementFragment extends Fragment implements SwipeRefreshLayout.OnRe
         index = 1;
         initData(searchText,index);
     }
+
 }
