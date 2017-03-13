@@ -1,5 +1,6 @@
 package com.ervin.android.rxervin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -125,6 +126,9 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.toolbar_right) void onToolbarClicked(){
         if(mTab.getSelectedTabPosition() == 1){
             androidFragment.backToToday();
+        }else{
+            Intent intent = new Intent(this,GankSearchActivity.class);
+            startActivity(intent);
         }
     }
 }
