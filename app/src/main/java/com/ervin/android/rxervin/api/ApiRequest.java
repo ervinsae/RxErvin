@@ -66,7 +66,7 @@ public class ApiRequest {
         });
 
         //支持自建证书，支持https（12306证书实验）
-        builder.sslSocketFactory(CertificationFactory.getSLLContext(App.getInstance().getApplicationContext()).getSocketFactory());
+        //builder.sslSocketFactory(CertificationFactory.getSLLContext(App.getInstance().getApplicationContext()).getSocketFactory());
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
