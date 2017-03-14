@@ -49,6 +49,10 @@ public class ApiRequest {
         };
         builder.authenticator(mAuthenticator);
 
+        //网络请求接口中携带token
+        builder.addNetworkInterceptor(new TokenInterceptor());
+
+
         //可以在请求中添加统一的header
         builder.addInterceptor(new Interceptor() {
             @Override
