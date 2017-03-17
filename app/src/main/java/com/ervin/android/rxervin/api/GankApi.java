@@ -1,6 +1,7 @@
 package com.ervin.android.rxervin.api;
 
 import com.ervin.android.rxervin.entity.AndroidGankEntity;
+import com.ervin.android.rxervin.entity.GankEntity;
 import com.ervin.android.rxervin.entity.MeizhiEntity;
 
 import retrofit2.http.GET;
@@ -20,4 +21,7 @@ public interface GankApi {
 
     @GET("day/{year}/{month}/{day}")
     Observable<AndroidGankEntity> getAndroidDayGank(@Path("year") String year,@Path("month") String month,@Path("day") String day);
+
+    @GET("search/query/listview/category/{category}/count/{count}/page/{page}")
+    Observable<GankEntity> getAllGank(@Path("category")String category,@Path("count") int count,@Path("page") int page);
 }
