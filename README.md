@@ -1,10 +1,11 @@
-#Rx练习项目
+ # Rx练习项目
 不断更新。。。
-##TODO
-**1. 切换为Rxjava2.0**
 
-##RULE
+ ## TODO
+ 1. 切换为Rxjava2.0 
 
-##另一个开源项目
+ ## RULE
+ 
+ ## 另一个开源项目
 
 https://github.com/ervinsae/EZCode
