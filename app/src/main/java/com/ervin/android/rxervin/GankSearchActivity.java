@@ -98,8 +98,9 @@ public class GankSearchActivity extends BaseActivity implements SearchSuggestion
 
                     @Override
                     public void onNext(GankEntity gankEntity) {
-                        webView.loadData(gankEntity.results.get(0).readability,"text/html","utf-8");
+                        //webView.loadData(gankEntity.results.get(0).readability,"text/html","utf-8");
                         //Html.fromHtml(gankEntity.results.get(0));
+                        webView.loadUrl(gankEntity.results.get(0).url);
                     }
                 });
     }
