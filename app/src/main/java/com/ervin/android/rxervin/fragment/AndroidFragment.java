@@ -124,4 +124,12 @@ public class AndroidFragment extends BaseFragment implements SwipeRefreshLayout.
         page = 1;
         initData(1);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(subscription != null && !subscription.isUnsubscribed()){
+            subscription.unsubscribe();
+        }
+    }
 }
